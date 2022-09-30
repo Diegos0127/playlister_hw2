@@ -206,6 +206,35 @@ class App extends React.Component {
     getPlaylistSize = () => {
         return this.state.currentList.songs.length;
     }
+    // THIS FUNCTION BEGINS THE PROCESS OF CREATING A NEW SONG
+    addSong = () => {
+        // FIRST FIGURE OUT WHAT THE NEW SONG'S NUMBER WILL BE
+        let newNumber = this.state.currentList.songs.length;
+
+        // MAKE THE NEW LIST
+        let newSong = {
+            title: "Untitled",
+            artist: "Unknown",
+            youTubeId: "dQw4w9WgXcQ"
+        };
+
+        // CHANGE THE APP STATE SO THAT THE CURRENT LIST IS
+        // THIS NEW LIST AND UPDATE THE SESSION DATA SO THAT THE
+        // NEXT LIST CAN BE MADE AS WELL. NOTE, THIS setState WILL
+        // FORCE A CALL TO render, BUT THIS UPDATE IS ASYNCHRONOUS,
+        // SO ANY AFTER EFFECTS THAT NEED TO USE THIS UPDATED STATE
+        // SHOULD BE DONE VIA ITS CALLBACK
+        let list = this.state.currentList;
+        list.songs[newNumber] = newSong
+        this.setStateWithUpdatedList(list);
+        
+    }
+
+
+
+
+
+
     // THIS FUNCTION MOVES A SONG IN THE CURRENT LIST FROM
     // start TO end AND ADJUSTS ALL OTHER ITEMS ACCORDINGLY
     moveSong(start, end) {
@@ -300,6 +329,7 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
+                    addSongCallback={this.addSong}
                 />
                 <PlaylistCards
                     currentList={this.state.currentList}

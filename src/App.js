@@ -8,6 +8,7 @@ import jsTPS from './common/jsTPS.js';
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 import RemoveSong_Transaction from './transactions/RemoveSong_Transaction.js';
+import AddSong_Transaction from './transactions/AddSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.js';
@@ -207,30 +208,40 @@ class App extends React.Component {
     getPlaylistSize = () => {
         return this.state.currentList.songs.length;
     }
+    // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN EDIT
+    editSong(eIndex, initTitle,initArtist, initYTID){
+        let newSong = {
+            title: initTitle,
+            artist: initArtist,
+            youTubeId: initYTID
+        };
+        let list = this.state.currentList;
+       list.songs[eIndex] = newSong;
+       this.setStateWithUpdatedList(list);
+    }
+
     // THIS FUNCTION BEGINS THE PROCESS OF CREATING A NEW SONG
-    addSong = () => {
+    addSong() {
         // FIRST FIGURE OUT WHAT THE NEW SONG'S NUMBER WILL BE
         let newNumber = this.state.currentList.songs.length;
 
-        // MAKE THE NEW LIST
+        // MAKE THE NEW SONG
         let newSong = {
             title: "Untitled",
             artist: "Unknown",
             youTubeId: "dQw4w9WgXcQ"
         };
-
-        // CHANGE THE APP STATE SO THAT THE CURRENT LIST IS
-        // THIS NEW LIST AND UPDATE THE SESSION DATA SO THAT THE
-        // NEXT LIST CAN BE MADE AS WELL. NOTE, THIS setState WILL
-        // FORCE A CALL TO render, BUT THIS UPDATE IS ASYNCHRONOUS,
-        // SO ANY AFTER EFFECTS THAT NEED TO USE THIS UPDATED STATE
-        // SHOULD BE DONE VIA ITS CALLBACK
+        //Add the new song to the lsit and update state
         let list = this.state.currentList;
         list.songs[newNumber] = newSong
         this.setStateWithUpdatedList(list);
         
     }
-    
+     // THIS FUNCTION ADDS A AddSong_Transaction TO THE TRANSACTION STACK
+     addAddSongTransaction = () => {
+        let transaction = new AddSong_Transaction(this);
+        this.tps.addTransaction(transaction);
+    }
 
     // THIS FUNCTION MOVES A SONG IN THE CURRENT LIST FROM
     // start TO end AND ADJUSTS ALL OTHER ITEMS ACCORDINGLY
@@ -345,7 +356,7 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
-                    addSongCallback={this.addSong}
+                    addSongCallback={this.addAddSongTransaction}
                 />
                 <PlaylistCards
                     currentList={this.state.currentList}

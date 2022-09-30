@@ -7,6 +7,7 @@ import jsTPS from './common/jsTPS.js';
 
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
+import RemoveSong_Transaction from './transactions/RemoveSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.js';
@@ -229,10 +230,25 @@ class App extends React.Component {
         this.setStateWithUpdatedList(list);
         
     }
+    
 
+    // THIS FUNCTION MOVES A SONG IN THE CURRENT LIST FROM
+    // start TO end AND ADJUSTS ALL OTHER ITEMS ACCORDINGLY
+    removeSong(rIndex) {
+        let list = this.state.currentList;
+        rIndex += -1;
 
+        // WE NEED TO UPDATE THE STATE FOR THE APP
+        let tempArray = list.songs.filter((song,index)=>index !==rIndex);
+        list.songs = tempArray;
+        this.setStateWithUpdatedList(list);
+    }
 
-
+    // THIS FUNCTION ADDS A RemoveSong_Transaction TO THE TRANSACTION STACK
+    addRemoveSongTransaction = (rIndex) => {
+        let transaction = new RemoveSong_Transaction(this, rIndex);
+        this.tps.addTransaction(transaction);
+    }
 
 
     // THIS FUNCTION MOVES A SONG IN THE CURRENT LIST FROM
@@ -333,7 +349,9 @@ class App extends React.Component {
                 />
                 <PlaylistCards
                     currentList={this.state.currentList}
-                    moveSongCallback={this.addMoveSongTransaction} />
+                    moveSongCallback={this.addMoveSongTransaction}
+                    removeSongCallback={this.addRemoveSongTransaction}
+                     />
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal

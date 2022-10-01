@@ -24,7 +24,7 @@ export default class RemoveSong_Transaction extends jsTPS_Transaction {
     
     undoTransaction() {
         this.app.addSong();
-        this.app.editSong(this.app.state.currentList.songs.length-1,this.title,this.artist,this.youTubeId)
+        this.app.editSong(this.app.state.currentList.songs.length,this.title,this.artist,this.youTubeId)
         this.app.moveSong(this.app.state.currentList.songs.length,this.removeIndex);
     }
 }

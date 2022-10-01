@@ -8,7 +8,7 @@ import jsTPS_Transaction from "../common/jsTPS.js"
  * @author McKilla Gorilla
  * @author Diego Sandoval
  */
-export default class RemoveSong_Transaction extends jsTPS_Transaction {
+export default class AddSong_Transaction extends jsTPS_Transaction {
     constructor(initApp) {
         super();
         this.app = initApp;

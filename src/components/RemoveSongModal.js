@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 export default class RemoveSongModal extends Component {
     render() {
         const { songTitleIndex, removeSongCallback, hideRemoveSongModalCallback } = this.props;
-        let rIndex = "";
+        let title = "";
         if (songTitleIndex) {
-            rIndex = songTitleIndex.substring(0,songTitleIndex.length-1);
+            title = songTitleIndex.substring(0,songTitleIndex.length-1);
         }
         return (
             <div 
@@ -18,7 +18,7 @@ export default class RemoveSongModal extends Component {
                         </div>
                         <div class="modal-center">
                             <div class="modal-center-content">
-                                Are you sure you wish to permanently remove {rIndex} from the playlist?
+                                Are you sure you wish to permanently remove {title} from the playlist?
                             </div>
                         </div>
                         <div class="modal-south">

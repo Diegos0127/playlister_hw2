@@ -35,6 +35,7 @@ export default class ListCard extends React.Component {
     }
     handleUpdate = (event) => {
         this.setState({ text: event.target.value });
+        console.log(event.target.value);
     }
     handleKeyPress = (event) => {
         if (event.code === "Enter") {
